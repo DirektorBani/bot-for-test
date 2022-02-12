@@ -36,13 +36,24 @@ def message_reply(message):
 
         bot.reply_to(message, image_result)
 
+    # for i in range(3, download_count):
+    #     photo_send_lost_2 = glob.glob(
+    #         f'.\\simple_images\\{query_replace}\\{query_replace}_{i}.*'  # Путь до только что скаченного файла
+    #     )
+    #     photo_send = ''.join(photo_send_lost_2)
+    #     print(photo_send)
+    #     bot.send_photo(message.chat.id, photo=open(photo_send, 'rb'))
+    photos = []
     for i in range(3, download_count):
         photo_send_lost_2 = glob.glob(
             f'.\\simple_images\\{query_replace}\\{query_replace}_{i}.*'  # Путь до только что скаченного файла
         )
         photo_send = ''.join(photo_send_lost_2)
         print(photo_send)
-        bot.send_photo(message.chat.id, photo=open(photo_send, 'rb'))
+        # bot.send_photo(message.chat.id, photo=open(photo_send, 'rb'))
+        photos.append(telebot.types.InputMediaPhoto(open(photo_send, 'rb')))
+    bot.send_media_group(message.chat.id, photos)
+
 
     name = message.from_user.first_name
     if message.text == "Лохи":
