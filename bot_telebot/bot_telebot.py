@@ -29,7 +29,7 @@ def log(message):
 
 
 def message_reply(message):
-    # log(message)
+    log(message)
     images_to_push = message.text
     bot.send_message(message.chat.id, f'Начался поиск картинок по запросу "{images_to_push}"')
     query_replace = images_to_push.replace(' ', '_')  # Замена пробелов на символ "_" с которым работает библиотека
@@ -61,6 +61,7 @@ def message_reply(message):
 
 
 def getgoogle(message_search):
+    log(message_search)
     text = message_search.text
     bot.send_message(message_search.chat.id, f'Начался поиск ссылок по запросу "{text}"')
     query = text
@@ -81,6 +82,12 @@ def start(start_bot):
     bot.send_message(start_bot.chat.id, 'Выберете что будем делать', reply_markup=markup)
 
 
+@bot.message_handler(commands=["stop"])
+def wiki(message):
+    if "/stop" in message.text:
+        bot.send_message(message.chat.id, "Меня не остановить!")
+
+
 @bot.message_handler(commands=["search"])
 def wiki(message_search):
     if "/search" in message_search.text:
@@ -89,28 +96,9 @@ def wiki(message_search):
 
 @bot.message_handler(commands=["photos"])
 def photos(message):
-    user_search = message.text
-    bot.register_next_step_handler(message, message_reply)
+    if "/photos" in message.text:
+        bot.register_next_step_handler(message, message_reply)
 
-    # @bot.message_handler(content_types='text')
-    # def handle_text(message):
-    #     chat = message.chat.id
-    #     if chat != group_chat_id:
-    #         bot.forward_message(group_chat_id, message.chat.id, message.message_id)
-    #         print(message.chat.id)
-    #         message_reply(message)
-    #     else:
-    #         message_reply(message)
-    # @bot.message_handler(content_types='text')
-    # def wiki_text(message_wiki):
-    #     bot.send_message(message_wiki.chat.id, getwiki(message_wiki.text))
-
-
-# @bot.message_handler(lambda message: message.text == "WIKI")
-# def wiki_selekt(message):
-#     bot.send_message(message.chat.id, 'Введите запрос')
-
-# bot.enable_save_next_step_handlers(delay=2)
 
 bot.infinity_polling()
 
