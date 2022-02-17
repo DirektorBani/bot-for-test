@@ -11,7 +11,7 @@ from datetime import datetime
 
 group_chat_id = -1001435928850
 logger = telebot.logger
-telebot.logger.setLevel(logging.DEBUG)
+telebot.logger.setLevel(logging.INFO)
 bot_commands = ("/start", "/help", "/button")  # Список команд
 bot_token = os.environ.get('BOT_TOKEN')  # ENV токена
 bot = telebot.TeleBot(bot_token)
@@ -74,6 +74,7 @@ def getgoogle(message_search):
 
 @bot.message_handler(commands=["start"])
 def start(start_bot):
+    log(start_bot)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     photo_search = types.KeyboardButton('/search')
     markup.add(photo_search)
@@ -84,18 +85,21 @@ def start(start_bot):
 
 @bot.message_handler(commands=["stop"])
 def wiki(message):
+    log(message)
     if "/stop" in message.text:
         bot.send_message(message.chat.id, "Меня не остановить!")
 
 
 @bot.message_handler(commands=["search"])
 def wiki(message_search):
+    log(message_search)
     if "/search" in message_search.text:
         bot.register_next_step_handler(message_search, getgoogle)
 
 
 @bot.message_handler(commands=["photos"])
 def photos(message):
+    log(message)
     if "/photos" in message.text:
         bot.register_next_step_handler(message, message_reply)
 
