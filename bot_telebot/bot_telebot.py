@@ -31,7 +31,7 @@ def log(message):
 def message_reply(message):
     # log(message)
     images_to_push = message.text
-
+    bot.send_message(message.chat.id, f'Начался поиск картинок по запросу "{images_to_push}"')
     query_replace = images_to_push.replace(' ', '_')  # Замена пробелов на символ "_" с которым работает библиотека
 
     my_results_list = []
@@ -62,6 +62,7 @@ def message_reply(message):
 
 def getgoogle(message_search):
     text = message_search.text
+    bot.send_message(message_search.chat.id, f'Начался поиск ссылок по запросу "{text}"')
     query = text
     links = []
     for j in search(query, tld="co.in", num=1, stop=1, pause=0):
@@ -84,15 +85,12 @@ def start(start_bot):
 def wiki(message_search):
     if "/search" in message_search.text:
         bot.register_next_step_handler(message_search, getgoogle)
-        getgoogle(message_search)
 
 
 @bot.message_handler(commands=["photos"])
 def photos(message):
     user_search = message.text
     bot.register_next_step_handler(message, message_reply)
-    bot.send_message(message.chat.id, f'Начался поиск картинок по запросу "{user_search}"')
-    message_reply(message)
 
     # @bot.message_handler(content_types='text')
     # def handle_text(message):
