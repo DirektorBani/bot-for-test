@@ -104,6 +104,10 @@ def photos(message):
         bot.register_next_step_handler(message, message_reply)
 
 
+@bot.message_handler(content_types=["text"])
+def handle_text(message):
+    log(message)
+
 bot.infinity_polling()
 
 # ПОПРОБОВАТЬ ЗАЮЗАТЬ SHELL SH ДЛЯ УДАЛЕНИЯ СРАНЫХ КАРТИНОК
